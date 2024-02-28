@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    {{meta|safe}}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sorting.css') }}">
+
+</head>
+
+<body>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/dndTree.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/difftree.js') }}"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/sorting.js') }}"></script>
+
+    <script type="text/javascript" >
+        {% for x in filelist %}
+        var {{x.value}} = "../topconcepts/{{x.file}}";
+        {% endfor %}
+
+        var savefile = "{{savefile}}";
+    </script>
+
+
+    <div class="container-fluid">
+        <div id="openleft"><img width="25px" src="{{ url_for('static', filename='img/right.png') }}"/></div>
+        
+        <div id="title">
+            {% if logo == ""%}
+                <h3>{{longname}}</h3><a href="{{url}}">return home</a><br/><br/>
+            {% else %}
+                <img width="300px" src="{{ url_for('static', filename='img/') }}{{logo}}" /><br /><a href="{{url}}">return home</a><br/><br />
+            {% endif %}
+        </div>
+
+        <div id="leftside">
+            
+
+            <div id="menu">
+                {% if logo == ""%}
+                    <h3>{{longname}}</h3><a href="{{url}}">return home</a><br/><br/>
+                {% else %}
+                    <img width="300px" src="{{ url_for('static', filename='img/') }}{{logo}}" /><br /><a href="{{url}}">return home</a><br/><br />
+                {% endif %}
+
+                Choose a branch of the {{shortname}}{% if version == "" %}{% else %} (v{{version}}){% endif %}:<BR />
+                <select id="opts">
+                    <option value="blank" selected="selected" disabled="disabled"> </option>
+                    {% for x in filelist %}
+                     <option id="{{x.value}}" value="{{x.value}}">{{x.name}}</option>
+                    {% endfor %}
+                </select>
+                <BR/>OR<br/>
+                Choose a previous save:<BR />
+                <select id="saveopts">
+                    <option id="nosave" value="none" selected="selected" disabled="disabled">No saves yet!</option>                  
+                </select>
+                <br/>OR<br/>
+                Load a previous export:<br/>
+                <input type="file" accept=".json" value="Load" id="browsebutton"/> <input type="button" value="Load" id="loadbutton">
+                <br/>OR<br/>
+                <input value="Start with a blank workspace" type=button id="blankspace"/>
+
+                <div id="treeoptions">
+                    <hr>
+                    <input type="button" value="Save As..." id="savebutton"/>
+                    <input type="button" value="Save" id="overridebutton"/>
+                    <input type="button" value="Delete" id="deletebutton"/>
+                    <br/>
+                    <input type="button" value="Export" id="exportbutton"/>
+                
+                    <br /><hr>
+                    <input type="button" value="Expand all" id="fullex"/>
+                    <input type="button" value="Collapse all" id="fullcollapse"/>
+                    <br/><br/>
+                    <input type="button" value="Undo" id="undobutton" />
+                    <input type="button" value="Redo" id="redobutton" />
+                    <br/><br/>
+                    Add Concept: <br />
+                    <input type="text" id="newnode" /><input type="button" value="Add Node" id="add_node" />               
+                    
+                    <br/><hr>
+                    <input type="button" value="Show Feedback Form" id="showbutton"/>
+                    <input type="button" value="Hide Feedback Form" id="hidebutton"/>
+                </div>
+
+
+            </div>
+        <div id=closeleft><img width="25px" src="{{ url_for('static', filename='img/left.png') }}"/></div>
+
+
+        </div>
+
+        <div id="secondleft">
+
+            <div id="feedback">
+                <h3>Send Your Feedback</h3>
+
+                <div id="error"></div>
+
+                Changes made using the sorting tool will be automatically included in your feedback when you submit this form.<br /><br />
+                <form name="review" METHOD="POST" onsubmit="checkform(this); return false;">
+                    <table cellspacing=0 border=0 cellpadding=0>
+                        <tr>
+                            <td>Your Name:</td>
+                            <td><input type="text" id="first_name" /></td>
+                        </tr>
+                        <tr>
+                            <td>Your Institution:&nbsp;</td>
+                            <td><input type="text" id="yourinst" /></td>
+                        </tr>
+                        <tr>
+                            <td>Your Email:</td>
+                            <td><input type="text" id="youremail" /></td>
+                        </tr>
+                    </table><br />
+                    Additional Notes/Comments:<br /><textarea cols="35" rows="3" id="notes" /></textarea>
+                    <br /><br />
+                    Robot Check<font color="#DD0000">*</font>:<br />
+                    <font color="#DD0000">Enter This Code >></font> <span id="txtCaptchaDiv" style="color:#000000"></span>
+                    <input type="hidden" id="txtCaptcha" /></label>
+                    <input type="text" name="txtInput" id="txtInput" size="15" />
+                    <br /><br />
+                    <input id="submitemail" type="submit" value="Submit">
+                </form>
+                <font color="#DD0000">*</font><i>Required</i><br />
+                
+            </div>
+
+            
+            
+            
+
+        </div>
+
+        <div id="main">
+            
+
+            <div id="history">
+                <div id=closeright><img width="25px" src="{{ url_for('static', filename='img/right.png') }}"/></div>
+                <h5>History of Changes</h5>
+                <br/>
+                <div id="undosection"><strong>Undo</strong>
+                    <ul id="undohistory"></ul>
+                </div>
+                
+                <hr/>
+                <div id="redosection"><strong>Redo</strong>
+                    <ul id="redohistory"></ul>
+                </div>
+            </div>
+            <div id="openright"><img width="25px" alt="Open History" src="{{ url_for('static', filename='img/left.png') }}"/></div>
+
+
+        <div id="tree-container">
+
+
+            <div id="instructions">
+                <span style="font-size: x-large;">
+                    <br />
+                    <br />
+                    <br />
+                    Please Read Completely Before Starting
+                </span>
+                <br />
+                <br />
+                To make suggestions using this tool...
+                <br />
+                <br />
+                1) Select a branch of the {{shortname}}, a previous save,
+                <br/>load a previous export, or start with a blank workspace<BR />
+                by choosing the appropriate option on the left.
+                <br />
+                <br />
+                2) Click on nodes and drag and drop them to a new<br />
+                location within the {{shortname}} tree.<br /><br />
+                3) New concepts may be added using the input box at<br />
+                the far left and clicking the "Add Node" button.<br /><br />
+                4) To indicate that a concept should be deleted, drag<br />
+                it to the "recycle" node.  You can also use this node to<br/>
+                temporarily store concepts as you re-arrange the structure.<br /><br />
+                A log of changes made using the sorting tool will be<BR />
+                automatically included in feedback when the "Submit"<br />
+                button is clicked.<br /><br />
+                <b>Refreshing or navigating away from the page without<BR />
+                saving or exporting will cause all work to be lost.</B>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+    <script type='text/javascript' src="{{ url_for('static', filename='js/simpletreemenu.js') }}"></script>
+    <link rel='stylesheet' type='text/css' href="{{ url_for('static', filename='css/simpletree.css') }}" />
+
+    <title>UAT Browse & Search</title>
+
+</head>
+
+<body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<span id="topm"></span>
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- left side bar -->
+        <div class="newsidebar col-xl-3 col-lg-4 col-md-4 col-12">
+
+            <!-- non-mobile tabs -->
+            <div class="d-none d-sm-none d-md-block">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link alpha-tab2 {%if gtype == 'alpha'%} active{% endif %}" id="alpha-tab" href="/uat" tabindex=0 role="tab" aria-controls="alpha" aria-selected="{%if gtype == 'alpha'%}true{% else %}false{% endif %}">Index</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link hierarchy-tab2 {%if gtype == 'hierarchy'%} active{% endif %}" id="hierarchy-tab" href="/uat?view=hierarchy" role="tab" aria-controls="hierarchy" aria-selected="{%if gtype == 'hierarchy'%}true{% else %}false{% endif %}">Hierarchy</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link search-tab2 {%if gtype == 'search'%} active{% endif %}" id="search-tab" href="/uat?view=search" role="tab" aria-controls="search" aria-selected="{%if gtype == 'search'%}true{% else %}false{% endif %}">Search</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- end non-mobile tabs -->
+
+            <!-- mobile pills -->
+            <div class="d-sm-block d-md-none">
+                
+            <!--     <p class="h4">Browse & Search UAT Concepts</p> -->
+                    {% if ( (element == "noelement") and (lookup == None) )  %}
+                        <p>The full list of UAT Concepts can be viewed alphabetically via the Index view, or by its structured hierarchy.  You can also search through all the UAT concepts.</p>
+                        <p>In the Index view, the list of all available UAT concepts is visible, sorted alphabetically.  Clicking on the name of a concept will take you to more details about that concept.</p>
+                        <p>The UAT is designed to be a polyhierarchy, meaning that for some concepts there are multiple paths to get to it starting from top level concepts.  You can see this structure in the Hierarchy view.  Clicking on arrow icons will open or close a list of child concepts.  Clicking on the name of a concept will take you to more details about that concept.</p>
+                    {% endif %}
+                <hr/>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                    <a class="nav-link alpha-tab {%if gtype == 'alpha'%} active{% endif %}" id="alpha-tab" data-toggle="pill" href="#alpha" role="tab" aria-controls="v-pills-alpha" aria-selected="false">By Index</a>
+                    <a class="nav-link hierarchy-tab {%if gtype == 'hierarchy'%} active{% endif %}" id="hierarchy-tab" data-toggle="pill" href="#hierarchy" role="tab" aria-controls="v-pills-hierarchy" aria-selected="false">By Hierarchy</a>
+                    <a class="nav-link search-tab {%if gtype == 'search'%} active{% endif %}" id="search-tab" data-toggle="pill" href="#search" role="tab" aria-controls="v-pills-search" aria-selected="false">Search</a>
+
+                </div>
+                <hr/>
+            </div>
+            <!-- end mobile pills-->
+
+            <!-- content of tabs and pills -->
+            <div class="tab-content">
+
+                <!-- alpha -->
+                <div class="tab-pane fade{%if gtype == 'alpha'%} show active{% endif %}" id="alpha" role="tabpanel" aria-labelledby="alpha-tab">
+
+                    <div class="d-sm-block d-md-none">Browse by Index</div>
+
+                    <ul class="alpha">
+                        <br/>
+                        {% for x in alphabet %}
+                            <li tabindex=0 class="letter">{{x}}</li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <br/><br/><br/><br/><br/><br/>
+                    
+                    {% for x in alphabet %}
+                        <span id="{{x}}" class="anchor"></span>
+                        <span style="width:50%;float:left" id="letter{{x}}" tabindex=0>{{x|upper}}</span> <span class="text-right d-none d-sm-none d-md-block" style="width:50%;float:right"><img tabindex=0 class="totopimg" style="width:15px;cursor:pointer;" src="{{ url_for('static', filename='/img/totop1.png') }}"/>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <table class=table>
+                                {% for el in alpha %}
+                                    {% if el.status != "deprecated" %}
+                                        {% if el.name|first|lower == x %}
+                                        <tr>
+                                            <td id="{{el.uri[30:]}}"><a id="{{el.uri[30:]}}link" href="/uat/{{el.uri[30:]}}">{{el.name}}</a></td>
+                                        </tr>
+
+                                        {% elif x == "#" %}
+                                            {% if el.name|first in "1234567890" %}
+                                                <tr>
+                                                    <td id="{{el.uri[30:]}}"><a id="{{el.uri[30:]}}link" href="/uat/{{el.uri[30:]}}">{{el.name}}</a></td>
+                                                </tr>
+                                            {% endif %}
+
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                        </table>
+                    {% endfor %}
+
+                </div>
+
+                <!-- hierarchy -->
+                <div class="tab-pane fade{%if gtype == 'hierarchy'%} show active{% endif %}" id="hierarchy" role="tabpanel" aria-labelledby="hierarchy-tab">
+                    <div class="d-sm-block d-md-none">Browse By Hierarchy</div><br/>
+                    <div class='advmenu'>
+                        <a href="javascript:ddtreemenu.flatten('treemenu1', 'expand')">expand all</a> | <a href="javascript:ddtreemenu.flatten('treemenu1', 'collapse')">collapse all</a>
+                    </div>
+
+                    {{htree|safe}}
+
+                    <script type='text/javascript'>
+                        ddtreemenu.createTree('treemenu1', false)
+                    </script>
+
+
+                    <br/><br/>
+                </div>
+
+                <!-- search -->
+                <div class="tab-pane fade{%if gtype == 'search'%} show active{% endif %}" id="search" role="tabpanel" aria-labelledby="search-tab">
+                    <div>Search for UAT Concepts</div>
+
+                    <br/>
+
+                    <form action="" name="searchform">
+                        <input type="hidden" id="uatview" name="view" value="search">
+                        <input type="text" id="uatlookup" name="lookup">
+                        <br>
+                        <input type="checkbox" id="searchdef" name="searchdef"> Also search defintions?
+                        <br/><br/>
+                        <input type="submit" value="Search">
+                    </form>
+                    <br/><br/>
+
+                </div>
+
+                <!-- mobile up to top arrow -->
+                <div style="position:fixed;bottom:50px;right:50px;z-index: 30;" class="d-sm-block d-md-none">
+                    <span class="text-right" style="float:right"><img tabindex=0 class="totopimgm" style="width:40px;cursor:pointer;" src="{{ url_for('static', filename='img/totopm.png') }}"></span>
+                </div>
+
+            </div>
+            <!-- end content of tabs and pills -->
+        </div>
+        <!-- end sidebar -->
+
+        <!-- website main content -->
+        <div class="col-xl-9 col-lg-8 col-md-8 offset-xl-3 offset-lg-4 offset-md-4">
+            <div class="mainstuff">
+
+                {% if lookup %}
+            
+                    <b>Search Query: {{lookup}}</b>
+                    <br/><br/>
+
+                    {% for y in results %} 
+                        <p>
+                            <strong><a href="{{y.uri|replace('<mark>', '')|replace('</mark>', '')}}">{{y.name|safe}}</a></strong> (http://astrothesaurus.org/uat/{{y.uri|safe}})
+                            {% if y.altNames %}
+                                <br/><i>Alternate term:</i> {{y.altNames|safe }}
+                            {% endif %}
+                            {% if y.definition %}
+                                <br/><i>Definition:</i> {{y.definition|safe }}
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+
+                    {% for y in defresults %} 
+                        <p>
+                            <strong><a href="{{y.uri|replace('<mark>', '')|replace('</mark>', '')}}">{{y.name|safe}}</a></strong> (http://astrothesaurus.org/uat/{{y.uri|safe}})
+                            <br/><i>Definition:</i> {{y.definition|safe }}
+                        </p>
+                    {% endfor %}
+
+                {% else %}
+
+                    {% if element == "noelement" %}
+
+                        <div class="d-none d-sm-none d-md-block">
+                            <div id="content">
+
+                                {% if unknown == "yes" %}
+                                    <p class="h3">Unknown UAT Concept</p>
+                                    <p class="h4">Concept does not exist</p>
+                                    <br/>
+                                {% endif %}
+
+                                <p>The full list of UAT Concepts can be viewed alphabetically via the Index view, or by its structured hierarchy.  You can also search through all the UAT concepts.</p>
+                                <p>In the Index view, the list of all available UAT concepts is visible, sorted alphabetically.  Clicking on the name of a concept will take you to more details about that concept.</p>
+                                <p>The UAT is designed to be a polyhierarchy, meaning that for some concepts there are multiple paths to get to it starting from top level concepts.  You can see this structure in the Hierarchy view.  Clicking on arrow icons will open or close a list of child concepts.  Clicking on the name of a concept will take you to more details about that concept.</p>
+                            </div>
+                        </div>
+
+
+                    {% else %}
+
+                        <div id="content">
+                            <p class="h3 text-break">{% if element.deprecated == True %}Deprecated: {% endif %}{{element.name}}</p>
+                            <a href="http://astrothesaurus.org/uat/{{element.uri[30:]}}"><span class="h5 text-break">http://astrothesaurus.org/uat/{{element.uri[30:]}}</span></a>
+                        </div>
+
+                        <br/>
+
+                        {% if element.broader != None %}
+                            <strong>Broader Concepts:</strong>
+                            <ul>
+                                {% for b in element.broader %}
+                                    <li class="uat"><a href="{{b.uri[30:]}}?view={{gtype}}{% if path %}&path={{path|last}}{% endif %}">{{b.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if element.narrower != None %}
+                            <strong>Narrower Concepts:</strong>
+                            <ul>
+                                {% for n in element.narrower %}
+                                    <li class="uat"><a href="{{n.uri[30:]}}?view={{gtype}}{% if path %}&path={{path|last}}{% endif %}">{{n.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if element.related != None %}
+                            <strong>Related Concepts:</strong>
+                            <ul>
+                                {% for r in element.related %}
+                                    <li class="uat"><a href="{{r.uri[30:]}}?view={{gtype}}{% if path %}&path={{path|last}}{% endif %}">{{r.name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if element.altNames != None %}
+                            <strong>Alternate Terms:</strong>
+                            <ul>
+                                {% for a in element.altNames %}
+                                    <li class="uat">{{a}}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if element.definition != None %}
+                            <dl>
+                                <dt>Definition:</dt>
+                                <dd>{{element.definition}}
+                            {% if element.editorialNotes != None %}
+                                {% for a in element.editorialNotes %}
+                                    {% if a.title == "Definition Provenance" %}
+                                        <br>&nbsp;&nbsp;&nbsp;&nbsp; - <cite>{{a.comment}}</cite>
+                                    {% endif %}
+                                {% endfor %}</dd>
+                            {% endif %}
+                            </dl>
+                        {% endif %}
+                        
+                        {% if element.examples != None %}
+                            <dl>
+                                <dt>Examples:</dt>
+                                <dd>{{element.examples}}</dd>
+                            </dl>
+                        {% endif %}
+
+                        {% if element.scopeNotes != None %}
+                            <dl>
+                                <dt>Scope Notes:</dt>
+                                <dd>{{element.scopeNotes}}</dd>
+                            </dl>
+                        {% endif %}
+
+                        {% if element.changeNotes != None %}
+                            <strong>Change Notes:</strong> {{element.changeNotes}}
+                            <br/><br/>
+                        {% endif %}
+
+                    {% endif%}
+                    
+
+                
+
+                {% endif %}
+
+            </div>
+            <!-- end mainstuff -->
+               
+        
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+
+
+
+$(document).ready(function(){
+
+    localStorage.setItem('currentTab', '{{gtype}}');
+    localStorage.setItem('currentElement', '{{element}}');
+
+var currentTab = localStorage.getItem('currentTab');
+    var currentElement = localStorage.getItem('currentElement');
+
+    if (currentElement != "noelement") {
+        var windowSize = $(window).width();
+        if(windowSize < 768){
+            $("#hierarchy").removeClass('active');
+            $("#search").removeClass('active');
+            $("#alpha").removeClass('active');
+            $('.'+currentTab+'-tab').removeClass("active");//
+            $('.'+currentTab+'-tab').attr("aria-selected", "false");
+        }
+    }
+
+    $(".letter").on("keyup", function(){
+        if (event.keyCode === 13) {
+            thisletter = event.target.innerHTML;
+            event.preventDefault();
+            document.getElementById(thisletter).scrollIntoView(true);
+            $("#letter"+thisletter).focus();
+        }
+    });
+
+    $(".letter").on("click", function(){
+        thisletter = event.target.innerHTML;
+        console.log(thisletter);
+        event.preventDefault();
+        document.getElementById(thisletter).scrollIntoView(true);
+        $("#letter"+thisletter).focus();
+    });
+
+    $(".totopimg").on("keyup", function(){
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("alpha-tab").scrollIntoView(true); 
+            $("#alpha-tab").focus();
+        }
+    });
+
+
+    $(".totopimg").on("click", function(){
+        event.preventDefault();
+        document.getElementById("alpha-tab").scrollIntoView(true);
+        $("#alpha-tab").focus();
+    });
+
+
+    $(".totopimgm").on("click", function(){
+            event.preventDefault();
+            document.getElementById("topm").scrollIntoView(true); 
+            $("#alpha-tab").focus();
+    });
+
+
+    $('.alpha-tab').click(function (e) {
+        localStorage.setItem('currentTab', 'alpha');
+        localStorage.setItem('inactive1', 'hierarchy');
+        localStorage.setItem('inactive2', 'search');
+
+        if ($(this).hasClass("active")) {
+            console.log("has class");
+           
+            $("#alpha").removeClass('active');
+            e.preventDefault();
+            e.stopPropagation();
+            $('.alpha-tab').removeClass("active");//
+            $('.alpha-tab').attr("aria-selected", "false");
+        }
+    });
+
+    $('.hierarchy-tab').click(function (e) {
+        localStorage.setItem('currentTab', 'hierarchy');
+        localStorage.setItem('inactive1', 'search');
+        localStorage.setItem('inactive2', 'alpha');
+
+        if ($(this).hasClass("active")) {
+           
+            $("#hierarchy").removeClass('active');
+            e.preventDefault();
+            e.stopPropagation();
+            $('.hierarchy-tab').removeClass("active");//
+            $('.hierarchy-tab').attr("aria-selected", "false");
+        }
+    });
+
+    $('.search-tab').click(function (e) {
+        localStorage.setItem('currentTab', 'search');
+        localStorage.setItem('inactive1', 'hierarchy');
+        localStorage.setItem('inactive2', 'alpha');
+
+        if ($(this).hasClass("active")) {
+           
+            $("#search").removeClass('active');
+            e.preventDefault();
+            e.stopPropagation();
+            $('.search-tab').removeClass("active");//
+            $('.search-tab').attr("aria-selected", "false");
+        }
+    });
+
+    $(window).on('resize', function(e){
+        var windowSize = $(window).width(); // Could've done $(this).width()
+
+        if(windowSize > 768){
+            var currentTab = localStorage.getItem('currentTab');
+            var inactive1 = localStorage.getItem('inactive1');
+            var inactive2 = localStorage.getItem('inactive2');
+
+            $("#"+currentTab).addClass('active');
+            e.preventDefault();
+            e.stopPropagation();
+            $('.'+inactive1+'-tab2').removeClass("active");
+            $('.'+inactive2+'-tab2').removeClass("active");
+            $('.'+currentTab+'-tab2').addClass("active");//
+            $('.'+currentTab+'-tab2').attr("aria-selected", "true");
+            $('.'+inactive1+'-tab').removeClass("active");
+            $('.'+inactive2+'-tab').removeClass("active");
+            $('.'+currentTab+'-tab').addClass("active");//
+            $('.'+currentTab+'-tab').attr("aria-selected", "true");
+            $('.'+currentTab).addClass("active");//
+            $('.'+currentTab).attr("aria-selected", "true");
+        }
+    });
+
+});
+
+
+
+</script>
+
+    {% if lookup %}
+    <script>
+        console.log($(".results"));
+    </script>
+    {% endif %}
+
+    {% if element != "noelement" and element != "unknown" %}
+    <script>
+
+        $("#{{element.uri[30:]}}").get(0).scrollIntoView();
+        $("#{{element.uri[30:]}}").css("background-color","lightgrey");
+
+        $("#{{element.uri[30:]}}").append(`<span class="text-right d-none d-sm-none d-md-block" style="float:right"><img tabindex=0 class="totopimg" style="width:15px;cursor:pointer;" src='{{ url_for("static", filename="/img/totop1.png" ) }}'></span>`);
+    </script>
+    {% endif %}
+
+    {% if gtype == "hierarchy" %}
+        <script>
+            {% if path %}
+                
+                {%  for item in path %}
+                    $("#ul-{{item}}").attr("rel","open").css("display","block");
+                {% endfor%}
+
+                $("#li-{{path|last}}-{{element.uri[30:]}}").get(0).scrollIntoView();
+                $("#li-{{path|last}}-{{element.uri[30:]}}").css("background-color","lightgrey");
+                $("#ul-{{path|last}}-{{element.uri[30:]}}").attr("rel","open").css("display","block");
+
+            
+            {% elif element != "noelement" %}
+
+                console.log("{{element.uri[30:]}}");
+                $("#li-{{element.uri[30:]}}").get(0).scrollIntoView();
+                $("#li-{{element.uri[30:]}}").css("background-color","lightgrey");
+                $("#ul-{{element.uri[30:]}}").attr("rel","open").css("display","block");
+
+            {% endif %}
+
+        </script>
+    {% endif %}
+
+</body>
+
+</html>

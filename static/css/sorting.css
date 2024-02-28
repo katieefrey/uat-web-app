@@ -1,0 +1,211 @@
+html {
+    overflow-y: hidden;
+}
+
+#leftside {
+    z-index: 10;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 380px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    /*bottom: 5px;
+    right: 5px;*/
+    overflow-y: auto;
+}
+
+#title {
+    display: none;
+    z-index: 9;
+    max-height: 100%;
+    max-width: 380px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    border-radius: 25px;
+    padding: 20px 10px;
+
+}
+
+#closeleft {
+    z-index: 11;
+    width: auto;
+    top: 240px;
+    position: absolute;
+    right: 0px;
+    overflow-y: none;
+    cursor: pointer;
+}
+
+#openleft {
+    z-index: 11;
+    width: auto;
+    top: 240px;
+    position: absolute;
+    left: 0px;
+    overflow-y: none;
+    cursor: pointer;
+}
+
+#closeright {
+    z-index: 11;
+    width: auto;
+    top: 50px;
+    position: absolute;
+    left: 0px;
+    overflow-y: none;
+    cursor: pointer;
+}
+
+#openright {
+    z-index: 11;
+    width: auto;
+    top: 55px;
+    position: absolute;
+    right: 0px;
+    overflow-y: none;
+    cursor: pointer;
+}
+
+#secondleft {
+    z-index: 10;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 380px;
+    position: absolute;
+    top: 5px;
+    left: 365px;
+    /*bottom: 5px;
+    right: 5px;*/
+    overflow-y: auto;
+}
+
+#main {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+}
+
+#hidebutton, #openleft, #treeoptions, #treeoptions1, #feedback, #history, #closeleft, #closeright, #openright {
+ display: none;
+}
+
+#loadbutton, #exportbutton {
+    margin-top: 5px;
+}
+
+#history {
+    /*float:right;
+    width:100px;
+    z-index: 10;
+    background-color: green;*/
+    z-index: 10;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 380px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 25px;
+    background-color: rgba(255,255,255, 0.7);
+    padding: 20px 10px;
+    /*bottom: 5px;
+    right: 5px;*/
+    overflow-y: auto;
+}
+
+#undohistory, #redohistory {
+    font-size: 0.875em;
+}
+
+#undohistory li:last-child, #redohistory li:last-child {
+    font-weight: bold;
+}
+
+#feedback, #menu {
+    border-radius: 25px;
+    background-color: rgba(255,255,255, 0.7);
+    padding: 20px 10px;
+    max-width: 360px;
+}
+
+#tree-container{
+    float:right;
+    top:0;
+}
+
+#instructions {
+    float:right;
+    width: 500px;
+}
+
+.overlay{
+    background-color:#EEE;
+    z-index: -1;
+    left: 0;
+    padding:0;
+    margin: 0;
+}
+
+.node {
+    cursor: pointer;
+}
+   
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.node text {
+    font-size:16px; 
+    font-family:sans-serif;
+}
+   
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+.templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+}
+
+textarea {
+    max-width: 290px;
+}
+
+.ghostCircle.show{
+    display:block;
+}
+
+.ghostCircle, .activeDrag .ghostCircle{
+    display: none;
+}
+
+.error{
+    color: red;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    /*font: 12px sans-serif;*/
+    background: white;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}

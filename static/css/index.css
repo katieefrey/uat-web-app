@@ -1,0 +1,160 @@
+/**** full site ****/
+
+/* all CSS for small screens, but if larger screen then....*/
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+
+    div.newsidebar {
+        padding-right: 20px;
+        padding-left: 20px;
+        position:fixed;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: calc(100vh);
+    }
+}
+
+div.topspacing {
+    height: 80px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 8;
+    background-color: blue;
+}
+
+div.mainstuff {
+    min-height: calc(100vh - 230px);
+}
+
+.nav-link {
+    display: block;
+    padding: .5rem .5rem;
+}
+
+/* default bootstrap constrast isn't good enough */
+a:hover, a:active {
+    color: #b4083a;
+}
+
+a {
+    color: #b4083a;
+}
+
+mark {
+    background-color: yellow;
+    padding: 0;
+}
+
+.bg-dark {
+    background-color: #292f33 !important;
+}
+
+.btncolor {
+    background-color: #4e687e !important;
+}
+
+
+/*** metasat elements pages ***/
+
+ul.alpha {
+    margin: 0;
+    padding: 0;
+}
+
+li.letter {
+    color: #b4083a;
+    width: 11.11%;
+    line-height: 2rem;
+    text-align: center;
+    list-style: none;
+    float: left;
+    cursor:pointer;
+}
+
+
+li.uat {
+    list-style: none;
+}
+
+
+/**** resource pages ****/
+
+/* source: https://www.w3schools.com/tags/tag_code.asp */
+code { 
+    font-family: Consolas,"courier new";
+    color: crimson;
+    /*background-color: #f1f1f1;*/
+    padding: 2px;
+    font-size: 105%;
+  }
+
+pre {
+    background-color: #444444;
+    color: #cccccc;
+    width: 80%;
+    overflow-x: scroll;
+}
+
+.subject {
+    color: #DE2A12;
+    font-weight: bold;
+}
+
+.predicate {
+    color: #601A4A;
+    font-style: italic;
+}
+
+.object {
+    color: #3C7F90;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.card-body {
+    padding: 0rem .3rem ;
+}
+
+/**basic-table is on the basic topics page**/
+
+table#basic-table {
+    border-collapse: collapse;
+}
+
+table#basic-table, th.basic-header, td.basic-data {
+    border: 1px solid black;
+}
+
+th.basic-header, td.basic-data {
+    padding: 10px;
+}
+
+/**** not sure what pgs these relate to ****/
+
+.panel-heading {
+  background-color: #014e6d!important;
+}
+
+.panel-button a {
+    color: white !important;
+}
+
+.panel-button {
+    font-weight: bold;
+    font-size: 20px;
+    color: #fff !important; 
+    /* text-decoration: underline;*/
+    text-decoration: none;
+}
+
+.panel-button:hover {
+    font-weight: bold;
+    font-size: 20px;
+    color: #fff !important; 
+    /* text-decoration: underline;*/
+    text-decoration: none;
+}
+
+dd {
+    margin-left:40px;
+}

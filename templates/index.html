@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>UAT Web Apps</title>
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+                <img src="{{ url_for('static', filename='img/uat-logo.png') }}" width="100%"/>
+        </div>
+            <div class="col-9">
+                <p class="h2">You've reached the UAT Web Apps Home Page!</p>
+            <br/><br/>
+            <p>You can find a few different web applications here:
+                <ul>
+                    <li><a href="/sort/">UAT Sorting Tool</a></li>
+                    <li><a href="/uat/">UAT Alphabetical Browser</a></li>
+                    <li><a href="/uat/?view=hierarchy">UAT Hierarchical Browser</a></li>
+                    <li><a href="/uat/?view=search">Search the UAT</a></li>
+                </ul>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <p class="text-center">To learn more about the Unified Astronomy Thesaurs, visit the <a href="http://astrothesaurus.org">main website</a>.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
